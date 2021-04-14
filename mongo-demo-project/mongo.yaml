@@ -31,3 +31,16 @@ spec:
             secretKeyRef:
               name: mongodb-secret # metadata name of secret file
               key: mongo-root-password
+---
+# Split into two kinds of resource
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb # same as above label!!
+  ports:
+  - protocol: TCP
+    port: 27017 # port to expost publicly
+    targetPort: 27017 # port to map from public connection to pod
