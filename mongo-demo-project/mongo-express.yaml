@@ -35,3 +35,18 @@ spec:
             configMapKeyRef:
               name: mongodb-configmap # metadata name of configmap file
               key: database_url
+---
+# Split into two kinds of resource
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app: mongo-express # same as above label!!
+  type: LoadBalancer # Make it as External Service alike (assigns service an external IP via nodePort)
+  ports:
+  - protocol: TCP
+    port: 8081 # port to expost publicly
+    targetPort: 8081 # port to map from public connection to pod
+    nodePort: 30000 # must be between 30000 - 32767
